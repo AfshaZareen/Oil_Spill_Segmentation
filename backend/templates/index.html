@@ -6,61 +6,63 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="background"></div>
     <div class="container">
-        <h1 class="glow-heading">🛢️ Oil Spill Segmentation</h1>
-        
-        <div class="card">
+        <h1 class="title">🛢️ Oil Spill Segmentation</h1>
+
+        <div class="upload-area">
             <form id="upload-form" enctype="multipart/form-data">
-                <label for="fileInput" class="upload-box">
-                    <span>📁 Click or drag an image here to upload</span>
-                    <input type="file" name="file" id="fileInput" accept="image/*" required hidden>
+                <label for="fileInput" class="drop-box">
+                    <img src="{{ url_for('static', filename='upload-icon.png') }}" class="icon" alt="Upload Icon">
+                    <p><strong>Drag & drop</strong> <span class="highlight">images</span>, or <strong>browse</strong> your computer</p>
+                    <input type="file" name="file" id="fileInput" accept="image/*" hidden>
                 </label>
-                <button type="submit" class="upload-btn">Upload & Predict</button>
+                <button type="submit" class="upload-button">Upload</button>
             </form>
         </div>
 
-        <div id="output-section" class="output-card">
-            <h2>Segmentation Output</h2>
-            <img id="outputImage" src="" alt="Segmented Result" />
+        <div id="output-section" class="image-row">
+            <div>
+                <h3>Input Image</h3>
+                <img id="inputImage" src="" alt="Input Image">
+            </div>
+            <div>
+                <h3>Segmented Output</h3>
+                <img id="outputImage" src="" alt="Output Image">
+            </div>
         </div>
     </div>
 
     <script>
-    const form = document.getElementById('upload-form');
-    const fileInput = document.getElementById('fileInput');
-    const outputImage = document.getElementById('outputImage');
+        const form = document.getElementById('upload-form');
+        const fileInput = document.getElementById('fileInput');
+        const inputImage = document.getElementById('inputImage');
+        const outputImage = document.getElementById('outputImage');
 
-    // Show preview after image is selected
-    fileInput.addEventListener('change', () => {
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                outputImage.src = e.target.result;
-                outputImage.style.display = 'block'; // Ensure it's visible
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Handle form submission
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
-
-        const response = await fetch('/predict', {
-            method: 'POST',
-            body: formData
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    inputImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
         });
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        outputImage.src = url;
-    });
-</script>
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            outputImage.src = url;
+        });
+    </script>
 </body>
 </html>
-
-
