@@ -1,8 +1,7 @@
 services:
   - type: web
-    name: flask-ml-app
+    name: oil-spill-segmentation
     env: python
     plan: free
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: python app.py
-    runtime: python 3.10
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"

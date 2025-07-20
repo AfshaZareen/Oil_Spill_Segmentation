@@ -31,4 +31,4 @@ def predict():
     # ✅ Return image file as response for frontend JS to show
     return send_file(OUTPUT_PATH, mimetype='image/png')
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
