@@ -6,6 +6,7 @@
 # segmentation-models-pytorch
 # gunicorn
 
+setuptools==65.5.1
 flask==2.3.2
 gunicorn==21.2.0
 torch==2.7.1
