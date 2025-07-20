@@ -8,8 +8,8 @@
 
 flask==2.3.2
 gunicorn==21.2.0
-torch==2.0.1
-torchvision==0.15.2
+torch==2.5.1
+torchvision==0.22.1
 Pillow==10.0.0
 matplotlib==3.7.1
 segmentation-models-pytorch==0.3.3
